@@ -5,7 +5,6 @@ function App() {
   return (
     <>
       <CommonLayout>
-        <h1>This is a simple react app</h1>
         <Outlet />
       </CommonLayout>
     </>
