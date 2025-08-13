@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
+import Password from "@/components/ui/Password";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -93,7 +94,7 @@ export function RegisterForm({
                     />
                   </FormControl>
                   <FormDescription className="sr-only">
-                    This is your public display name.
+                    This is your email.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -106,10 +107,10 @@ export function RegisterForm({
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Password {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
-                    This is your public display name.
+                    This is your password.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -122,10 +123,10 @@ export function RegisterForm({
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input type="password" {...field} />
+                    <Password {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
-                    This is your public display name.
+                    This is password confirmation.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
