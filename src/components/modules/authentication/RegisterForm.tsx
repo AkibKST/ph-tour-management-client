@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import Password from "@/components/ui/Password";
@@ -42,6 +42,7 @@ export function RegisterForm({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [register] = useRegisterMutation();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -64,7 +65,8 @@ export function RegisterForm({
       const result = await register(userInfo).unwrap();
       console.log(result);
 
-      toast.success("Registration successful! Please login.");
+      toast.success("Registration successful! Please verify your email.");
+      navigate("/verify");
     } catch (error) {
       console.log(error);
     }
