@@ -164,7 +164,7 @@ export default function Verify() {
                           disabled={timer !== 0}
                           className={cn("p-0 m-0", {
                             "cursor-pointer": timer === 0,
-                            "text-gray-500": timer !== 0,
+                            "text-gray-300": timer !== 0,
                           })}
                         >
                           Resent OPT:{" "}
