@@ -19,7 +19,9 @@ export const authApi = baseApi.injectEndpoints({
         url: "/auth/logout",
         method: "POST",
       }),
-      // invalidatesTags: ["USER"],
+
+      // Invalidate the USER tag to refetch user info after logout
+      invalidatesTags: ["USER"],
     }),
     // -------------------------------
 
@@ -59,7 +61,9 @@ export const authApi = baseApi.injectEndpoints({
         url: "/user/me",
         method: "GET",
       }),
-      // providesTags: ["USER"],
+
+      //for automatic refetching of user data
+      providesTags: ["USER"],
     }),
     // -------------------------------
   }),
