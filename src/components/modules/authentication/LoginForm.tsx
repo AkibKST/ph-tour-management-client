@@ -111,6 +111,7 @@ export function LoginForm({
           </span>
         </div>
 
+        {/* Google Login */}
         {/*//* http://localhost:5000/api/v1/auth/google */}
         <Button
           onClick={() => window.open(`${config.baseURL}/auth/google`)}

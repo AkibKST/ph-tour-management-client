@@ -3,6 +3,7 @@ import type { IResponse, ISendOtp, IVerifyOtp } from "@/types";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // login mutation
     login: builder.mutation({
       query: (userInfo) => ({
         url: "/auth/login",
@@ -10,6 +11,9 @@ export const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
+    // -------------------------------
+
+    // logout mutation
     logout: builder.mutation({
       query: () => ({
         url: "/auth/logout",
@@ -17,6 +21,9 @@ export const authApi = baseApi.injectEndpoints({
       }),
       // invalidatesTags: ["USER"],
     }),
+    // -------------------------------
+
+    // register mutation
     register: builder.mutation({
       query: (userInfo) => ({
         url: "/user/register",
@@ -24,6 +31,9 @@ export const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
+    // -------------------------------
+
+    // send OTP mutation
     sendOtp: builder.mutation<IResponse<null>, ISendOtp>({
       query: (userInfo) => ({
         url: "/otp/send",
@@ -31,6 +41,9 @@ export const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
+    // -------------------------------
+
+    // verify OTP mutation
     verifyOtp: builder.mutation<IResponse<null>, IVerifyOtp>({
       query: (userInfo) => ({
         url: "/otp/verify",
@@ -38,6 +51,9 @@ export const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
+    // -------------------------------
+
+    // get user info
     userInfo: builder.query({
       query: () => ({
         url: "/user/me",
@@ -45,6 +61,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
       // providesTags: ["USER"],
     }),
+    // -------------------------------
   }),
 });
 
