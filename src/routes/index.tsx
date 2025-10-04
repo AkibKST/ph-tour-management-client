@@ -9,6 +9,9 @@ import { generateRoutes } from "@/utils/generateRoutes";
 import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
+import { withAuth } from "@/utils/withAuth";
+import { role } from "@/constants/role";
+import type { TRole } from "@/types";
 
 export const router = createBrowserRouter([
   {
@@ -16,13 +19,13 @@ export const router = createBrowserRouter([
     path: "/",
     children: [
       {
+        Component: withAuth(About), // Protected route example
         path: "about",
-        Component: About,
       },
     ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.superAdmin as TRole), // Protected route for superAdmin
     path: "/admin",
     children: [
       // Redirect to a default admin page, e.g., analytics
@@ -31,7 +34,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.user as TRole), // Protected route for user
     path: "/user",
     children: [
       // Redirect to a default user page, e.g., bookings
