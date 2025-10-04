@@ -9,6 +9,7 @@ export interface IResponse<T> {
   data: T;
 }
 
+// Sidebar Item Interface use in generateRoutes.tsx and adminSidebarItems.ts
 export interface ISidebarItem {
   title: string;
   items: {

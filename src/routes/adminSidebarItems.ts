@@ -1,3 +1,5 @@
+//use this file into getSidebarItems.ts
+
 // import AddTour from "@/pages/Admin/AddTour";
 // import AddTourType from "@/pages/Admin/AddTourType";
 // import Analytics from "@/pages/Admin/Analytics";
