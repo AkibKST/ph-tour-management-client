@@ -6,6 +6,7 @@
 import type { ISidebarItem } from "@/types";
 import { lazy } from "react";
 
+//UX and Performance Enhancements with Lazy Loading
 const Analytics = lazy(() => import("@/pages/Admin/Analytics"));
 const AddTour = lazy(() => import("@/pages/Admin/AddTour"));
 const AddTourType = lazy(() => import("@/pages/Admin/AddTourType"));

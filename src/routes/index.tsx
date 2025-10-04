@@ -6,7 +6,7 @@ import Register from "@/pages/Register";
 import Unauthorized from "@/pages/Unathorized";
 import Verify from "@/pages/Verify";
 import { generateRoutes } from "@/utils/generateRoutes";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 import { adminSidebarItems } from "./adminSidebarItems";
 import { userSidebarItems } from "./userSidebarItems";
 
@@ -24,12 +24,20 @@ export const router = createBrowserRouter([
   {
     Component: DashboardLayout,
     path: "/admin",
-    children: [...generateRoutes(adminSidebarItems)],
+    children: [
+      // Redirect to a default admin page, e.g., analytics
+      { index: true, element: <Navigate to="/admin/analytics" /> },
+      ...generateRoutes(adminSidebarItems),
+    ],
   },
   {
     Component: DashboardLayout,
     path: "/user",
-    children: [...generateRoutes(userSidebarItems)],
+    children: [
+      // Redirect to a default user page, e.g., bookings
+      { index: true, element: <Navigate to="/user/bookings" /> },
+      ...generateRoutes(userSidebarItems),
+    ],
   },
   {
     Component: Login,
