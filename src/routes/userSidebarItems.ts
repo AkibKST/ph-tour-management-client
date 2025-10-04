@@ -1,3 +1,5 @@
+//use this file into getSidebarItems.ts
+
 import Bookings from "@/pages/User/Bookings";
 import type { ISidebarItem } from "@/types";
 

@@ -1,3 +1,5 @@
+//use this function to get sidebar items based on user role and  also use this into app-sidebar.tsx
+
 import { role } from "@/constants/role";
 import { adminSidebarItems } from "@/routes/adminSidebarItems";
 import { userSidebarItems } from "@/routes/userSidebarItems";
