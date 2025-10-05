@@ -38,51 +38,49 @@ export function AddTourTypeModal() {
 
   return (
     <Dialog>
-      <form>
-        <DialogTrigger asChild>
-          <Button>Add Tour Type</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add Tour Type</DialogTitle>
-          </DialogHeader>
-          <Form {...form}>
-            <form
-              id="add-tour-type"
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4"
-            >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tour Type Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Tour Type Name"
-                        {...field}
-                        value={field.value || ""}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <DialogClose asChild>
-              <Button type="submit" form="add-tour-type">
-                Save changes
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </form>
+      <DialogTrigger asChild>
+        <Button>Add Tour Type</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add Tour Type</DialogTitle>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            id="add-tour-type"
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tour Type Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Tour Type Name"
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <DialogClose asChild>
+            <Button type="submit" form="add-tour-type">
+              Save changes
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 }
