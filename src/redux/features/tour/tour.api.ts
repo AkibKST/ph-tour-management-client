@@ -5,10 +5,13 @@ export const tourApi = baseApi.injectEndpoints({
     // add tour type mutation
     addTourType: builder.mutation({
       query: (tourTypeName) => ({
-        url: "/tour/add-tour-type",
+        url: "/tour/create-tour-type",
         method: "POST",
         data: tourTypeName,
       }),
+
+      //for cache invalidation
+      invalidatesTags: ["TOUR"],
     }),
     // -------------------------------
 
@@ -18,6 +21,9 @@ export const tourApi = baseApi.injectEndpoints({
         url: "/tour/tour-types",
         method: "GET",
       }),
+
+      //for cache invalidation
+      providesTags: ["TOUR"],
 
       //useful for transforming response before using it in the component and filtering essential data which we want
       transformResponse: (response) => response.data,

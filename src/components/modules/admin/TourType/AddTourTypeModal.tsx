@@ -3,16 +3,39 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useAddTourTypeMutation } from "@/redux/features/tour/tour.api";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+interface AddTourTypeModalProps {
+  name: string;
+}
 
 export function AddTourTypeModal() {
+  const form = useForm<AddTourTypeModalProps>();
+  const [addTourType] = useAddTourTypeMutation();
+
+  const onSubmit = async (data: AddTourTypeModalProps) => {
+    const res = await addTourType({ name: data.name }).unwrap();
+    if (res.success) {
+      toast.success("Tour Type Added");
+    }
+  };
+
   return (
     <Dialog>
       <form>
@@ -22,21 +45,39 @@ export function AddTourTypeModal() {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Add Tour Type</DialogTitle>
-            <DialogDescription>
-              Add a new tour type here. Click save when you are done.
-            </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="name-1">Name</Label>
-              <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-            </div>
-          </div>
+          <Form {...form}>
+            <form
+              id="add-tour-type"
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tour Type Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Tour Type Name"
+                        {...field}
+                        value={field.value || ""}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+          </Form>
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button type="submit">Save changes</Button>
+            <Button type="submit" form="add-tour-type">
+              Save changes
+            </Button>
           </DialogFooter>
         </DialogContent>
       </form>

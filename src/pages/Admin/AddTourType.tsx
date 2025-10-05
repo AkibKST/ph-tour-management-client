@@ -30,7 +30,7 @@ export default function AddTourType() {
           </TableHeader>
           <TableBody>
             {data?.data?.map((item: { name: string }) => (
-              <TableRow>
+              <TableRow key={item.name}>
                 <TableCell className="font-medium w-full">
                   {item?.name}
                 </TableCell>
