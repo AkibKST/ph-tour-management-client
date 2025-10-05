@@ -1,3 +1,4 @@
+import { DeleteConfirmation } from "@/components/DeleteConfirmation";
 import { AddTourTypeModal } from "@/components/modules/admin/TourType/AddTourTypeModal";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,11 +9,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
+import {
+  useGetTourTypesQuery,
+  useRemoveTourTypeMutation,
+} from "@/redux/features/tour/tour.api";
 import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function AddTourType() {
+  //fetching tour types
   const { data } = useGetTourTypesQuery(undefined);
+
+  //delete tour type mutation
+  const [removeTourType] = useRemoveTourTypeMutation();
+
+  //function to handle the deletion of a tour type
+  const handleRemoveTourType = async (tourTypeId: string) => {
+    // Show loading toast
+    const toastId = toast.loading("Deleting tour type...");
+
+    //try catch block to handle the async operation on removeTourType
+    try {
+      const res = await removeTourType(tourTypeId).unwrap();
+
+      if (res.success) {
+        toast.success("Tour type deleted successfully", { id: toastId });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to delete the tour type", { id: toastId });
+    }
+  };
 
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
@@ -29,15 +56,20 @@ export default function AddTourType() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.data?.map((item: { name: string }) => (
-              <TableRow key={item.name}>
+            {data?.data?.map((item: { _id: string; name: string }) => (
+              <TableRow key={item._id}>
                 <TableCell className="font-medium w-full">
                   {item?.name}
                 </TableCell>
                 <TableCell>
-                  <Button size="sm">
-                    <Trash2 />
-                  </Button>
+                  {/* Delete Confirmation Component who take onConfirm prop with two arguments */}
+                  <DeleteConfirmation
+                    onConfirm={() => handleRemoveTourType(item._id)}
+                  >
+                    <Button size="sm">
+                      <Trash2 />
+                    </Button>
+                  </DeleteConfirmation>
                 </TableCell>
               </TableRow>
             ))}

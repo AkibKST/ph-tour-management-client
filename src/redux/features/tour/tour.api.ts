@@ -15,6 +15,18 @@ export const tourApi = baseApi.injectEndpoints({
     }),
     // -------------------------------
 
+    // delete tour type mutation
+    removeTourType: builder.mutation({
+      query: (tourTypeId) => ({
+        url: `/tour/tour-types/${tourTypeId}`,
+        method: "DELETE",
+      }),
+
+      //for cache invalidation
+      invalidatesTags: ["TOUR"],
+    }),
+    // -------------------------------
+
     // get tour type query
     getTourTypes: builder.query({
       query: () => ({
@@ -29,23 +41,11 @@ export const tourApi = baseApi.injectEndpoints({
       transformResponse: (response) => response.data,
     }),
     // -------------------------------
-
-    // register mutation
-
-    // -------------------------------
-
-    // send OTP mutation
-
-    // -------------------------------
-
-    // verify OTP mutation
-
-    // -------------------------------
-
-    // get user info
-
-    // -------------------------------
   }),
 });
 
-export const { useAddTourTypeMutation, useGetTourTypesQuery } = tourApi;
+export const {
+  useAddTourTypeMutation,
+  useGetTourTypesQuery,
+  useRemoveTourTypeMutation,
+} = tourApi;
