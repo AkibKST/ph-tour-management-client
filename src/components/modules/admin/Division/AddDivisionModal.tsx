@@ -1,3 +1,4 @@
+import SingleImageUploader from "@/components/SingleImageUploader";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 // import { toast } from "sonner";
 
@@ -27,6 +29,10 @@ interface AddDivisionModalProps {
 }
 
 export function AddDivisionModal() {
+  const [image, setImage] = useState<File | null>(null);
+
+  console.log("inside add division modal, selected image is ", image);
+
   const form = useForm<AddDivisionModalProps>({
     defaultValues: {
       name: "",
@@ -85,6 +91,9 @@ export function AddDivisionModal() {
               )}
             />
           </form>
+
+          {/* Image Upload */}
+          <SingleImageUploader onChange={setImage}></SingleImageUploader>
         </Form>
         <DialogFooter>
           <DialogClose asChild>
