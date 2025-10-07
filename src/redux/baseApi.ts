@@ -6,6 +6,6 @@ export const baseApi = createApi({
   baseQuery: axiosBaseQuery(),
 
   // Define the types of tags that can be invalidated or provided by endpoints for caching purposes
-  tagTypes: ["USER", "TOUR", "BOOKING"],
+  tagTypes: ["USER", "TOUR", "DIVISION"],
   endpoints: () => ({}),
 });

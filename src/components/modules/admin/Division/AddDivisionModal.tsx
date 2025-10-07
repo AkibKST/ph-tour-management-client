@@ -19,37 +19,53 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAddDivisionMutation } from "@/redux/features/division/division.api";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-// import { toast } from "sonner";
+import { toast } from "sonner";
 
-interface AddDivisionModalProps {
-  name: string;
-  description?: string;
-}
+// interface AddDivisionModalProps {
+//   name: string;
+//   description?: string;
+// }
 
 export function AddDivisionModal() {
+  // State to control the visibility of the dialog
+  const [open, setOpen] = useState(false);
+
+  // State to hold the selected image file
   const [image, setImage] = useState<File | null>(null);
 
-  console.log("inside add division modal, selected image is ", image);
+  const [addDivision] = useAddDivisionMutation();
 
-  const form = useForm<AddDivisionModalProps>({
+  const form = useForm({
     defaultValues: {
       name: "",
       description: "",
     },
   });
-  //   const [addDivision] = useAddTourTypeMutation();
 
-  //   const onSubmit = async (data: AddDivisionModalProps) => {
-  //     // const res = await addDivision({ name: data.name }).unwrap();
-  //     if (res.success) {
-  //       toast.success("Division Added");
-  //     }
-  //   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = async (data: any) => {
+    // Create a FormData object to hold the form data
+    const formData = new FormData();
+
+    // Append the form fields and the image file to the FormData object
+    formData.append("data", JSON.stringify(data));
+    formData.append("file", image as File);
+
+    try {
+      // Call the addDivision mutation with the FormData
+      await addDivision(formData).unwrap();
+      toast.success("Division Added");
+      setOpen(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Add Division</Button>
       </DialogTrigger>
@@ -60,7 +76,7 @@ export function AddDivisionModal() {
         <Form {...form}>
           <form
             id="add-division"
-            // onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="space-y-5"
           >
             <FormField
@@ -100,7 +116,7 @@ export function AddDivisionModal() {
             <Button variant="outline">Cancel</Button>
           </DialogClose>
           <DialogClose asChild>
-            <Button type="submit" form="add-division">
+            <Button disabled={!image} type="submit" form="add-division">
               Save changes
             </Button>
           </DialogClose>
