@@ -34,22 +34,20 @@ import { cn } from "@/lib/utils";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 import { useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
 
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler, type FieldValues } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format, formatISO } from "date-fns";
-
-type FormValues = {
-  title: string;
-  division: string;
-  tourType: string;
-  description: string;
-  location: string;
-  startDate: string | Date;
-  endDate: string | Date;
-};
+import MultipleImageUploader from "@/components/MultipleImageUploader";
+import { useState } from "react";
+import type { FileMetadata } from "@/hooks/use-file-upload";
 
 export default function AddTour() {
+  // State to hold the uploaded images
+  const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
+
+  console.log(images);
+
   // Fetching tour types and divisions data from the API
   const { data: tourData, isLoading: tourLoading } =
     useGetTourTypesQuery(undefined);
@@ -88,7 +86,7 @@ export default function AddTour() {
   // --------------------------------
 
   // Handle form submission
-  const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const tourData = {
       ...data,
 
@@ -96,6 +94,11 @@ export default function AddTour() {
       endDate: formatISO(data.endDate),
     };
     console.log(tourData);
+
+    const formData = new FormData();
+
+    formData.append("data", JSON.stringify(tourData));
+    images.forEach((image) => formData.append("files", image as File));
   };
   // --------------------------------
 
@@ -303,8 +306,8 @@ export default function AddTour() {
               </div>
               {/* -------------------------------- */}
 
-              {/* FormField for handle description */}
-              <div className="flex gap-5 items-stretch">
+              {/* FormField for handle description and Image upload */}
+              <div className="flex flex-1 gap-5 items-stretch">
                 <FormField
                   control={form.control}
                   name="description"
@@ -318,6 +321,13 @@ export default function AddTour() {
                     </FormItem>
                   )}
                 />
+
+                {/* Image upload */}
+                <div className="flex-1 mt-5 ">
+                  <MultipleImageUploader
+                    onChange={setImages}
+                  ></MultipleImageUploader>
+                </div>
               </div>
               {/* -------------------------------- */}
 
