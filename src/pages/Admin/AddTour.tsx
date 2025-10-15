@@ -34,10 +34,20 @@ import { cn } from "@/lib/utils";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 import { useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
 
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
+
+type FormValues = {
+  title: string;
+  division: string;
+  tourType: string;
+  description: string;
+  location: string;
+  startDate: string | Date;
+  endDate: string | Date;
+};
 
 export default function AddTour() {
   // Fetching tour types and divisions data from the API
@@ -77,6 +87,18 @@ export default function AddTour() {
   });
   // --------------------------------
 
+  // Handle form submission
+  const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+    const tourData = {
+      ...data,
+
+      startDate: formatISO(data.startDate),
+      endDate: formatISO(data.endDate),
+    };
+    console.log(tourData);
+  };
+  // --------------------------------
+
   return (
     <div className="w-full max-w-4xl mx-auto px-5 mt-16">
       <Card>
@@ -86,7 +108,11 @@ export default function AddTour() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form id="add-tour-form" className="space-y-5">
+            <form
+              id="add-tour-form"
+              className="space-y-5"
+              onSubmit={form.handleSubmit(handleSubmit)}
+            >
               {/* FormField for handle title */}
               <FormField
                 control={form.control}
@@ -211,10 +237,14 @@ export default function AddTour() {
                         <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
-                            selected={field.value}
+                            selected={new Date(field.value)}
                             onSelect={field.onChange}
+                            // Disable past dates for start date from today
                             disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
+                              date <
+                              new Date(
+                                new Date().setDate(new Date().getDate() - 1)
+                              )
                             }
                             captionLayout="dropdown"
                           />
@@ -253,10 +283,14 @@ export default function AddTour() {
                         <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
-                            selected={field.value}
+                            selected={new Date(field.value)}
                             onSelect={field.onChange}
+                            // Disable past dates for start date from today
                             disabled={(date) =>
-                              date > new Date() || date < new Date("1900-01-01")
+                              date <
+                              new Date(
+                                new Date().setDate(new Date().getDate() - 1)
+                              )
                             }
                             captionLayout="dropdown"
                           />
