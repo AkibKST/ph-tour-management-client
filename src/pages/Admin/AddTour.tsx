@@ -37,7 +37,12 @@ import {
   useGetTourTypesQuery,
 } from "@/redux/features/tour/tour.api";
 
-import { useForm, type SubmitHandler, type FieldValues } from "react-hook-form";
+import {
+  useForm,
+  type SubmitHandler,
+  type FieldValues,
+  useFieldArray,
+} from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { format, formatISO } from "date-fns";
@@ -83,9 +88,18 @@ export default function AddTour() {
       location: "",
       startDate: "",
       endDate: "",
+      included: [{ value: "" }],
     },
   });
   // --------------------------------
+
+  // For handling dynamic fields in the form (like 'included' items)
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "included",
+  });
+
+  console.log(fields);
 
   // Handle form submission
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -95,6 +109,9 @@ export default function AddTour() {
 
       startDate: formatISO(data.startDate),
       endDate: formatISO(data.endDate),
+
+      // Extract only the values from the included array
+      included: data.included.map((item: { value: string }) => item.value),
     };
 
     // Create a FormData object to send the data as multipart/form-data
@@ -196,6 +213,7 @@ export default function AddTour() {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        key={field.value}
                         //disable select when loading
                         disabled={divisionLoading}
                       >
@@ -347,6 +365,29 @@ export default function AddTour() {
               {/* -------------------------------- */}
 
               <div className="border-t border-muted w-full "></div>
+
+              <div>
+                <Button type="button" onClick={() => append({ value: "" })}>
+                  Add Includes
+                </Button>
+
+                {fields.map((item, index) => (
+                  <FormField
+                    control={form.control}
+                    name={`included.${index}.value`}
+                    key={item.id}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tour Title</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </div>
             </form>
           </Form>
         </CardContent>
