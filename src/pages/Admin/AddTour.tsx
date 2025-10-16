@@ -32,7 +32,10 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
-import { useGetTourTypesQuery } from "@/redux/features/tour/tour.api";
+import {
+  useAddTourMutation,
+  useGetTourTypesQuery,
+} from "@/redux/features/tour/tour.api";
 
 import { useForm, type SubmitHandler, type FieldValues } from "react-hook-form";
 import { CalendarIcon } from "lucide-react";
@@ -46,15 +49,14 @@ export default function AddTour() {
   // State to hold the uploaded images
   const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
 
-  console.log(images);
-
   // Fetching tour types and divisions data from the API
   const { data: tourData, isLoading: tourLoading } =
     useGetTourTypesQuery(undefined);
   const { data: divisionData, isLoading: divisionLoading } =
     useGetDivisionsQuery(undefined);
 
-  console.log(tourData);
+  // Mutation hook to add a new tour
+  const [addTour] = useAddTourMutation();
 
   // Transforming the fetched data into options for Select components
   const tourTypeOptions = tourData?.data?.map(
@@ -87,18 +89,31 @@ export default function AddTour() {
 
   // Handle form submission
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
+    // Prepare the data to be sent to the server
     const tourData = {
       ...data,
 
       startDate: formatISO(data.startDate),
       endDate: formatISO(data.endDate),
     };
-    console.log(tourData);
 
+    // Create a FormData object to send the data as multipart/form-data
     const formData = new FormData();
 
+    // Append the tour data and images to the FormData object
     formData.append("data", JSON.stringify(tourData));
     images.forEach((image) => formData.append("files", image as File));
+
+    // Call the addTour mutation to submit the data
+    try {
+      const res = await addTour(formData).unwrap();
+      console.log(res);
+      // Optionally, you can reset the form and images state after successful submission
+      form.reset();
+      setImages([]);
+    } catch (err) {
+      console.error(err);
+    }
   };
   // --------------------------------
 
