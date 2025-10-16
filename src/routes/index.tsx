@@ -12,6 +12,10 @@ import { userSidebarItems } from "./userSidebarItems";
 import { withAuth } from "@/utils/withAuth";
 import { role } from "@/constants/role";
 import type { TRole } from "@/types";
+import Tours from "@/pages/Tours";
+import Homepage from "@/pages/Homepage";
+import TourDetails from "@/pages/TourDetails";
+import Booking from "@/pages/Booking";
 
 export const router = createBrowserRouter([
   {
@@ -19,8 +23,24 @@ export const router = createBrowserRouter([
     path: "/",
     children: [
       {
-        Component: withAuth(About), // Protected route example
+        Component: Homepage,
+        index: true,
+      },
+      {
+        Component: About,
         path: "about",
+      },
+      {
+        Component: Tours,
+        path: "tours",
+      },
+      {
+        Component: TourDetails,
+        path: "tours/:id",
+      },
+      {
+        Component: withAuth(Booking),
+        path: "booking/:id",
       },
     ],
   },
