@@ -4,16 +4,21 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 export default function Booking() {
+  // State for guest count and total amount
   const [guestCount, setGuestCount] = useState(1);
+
+  // total amount
   const [totalAmount, setTotalAmount] = useState(0);
 
-  console.log(totalAmount);
+  // console.log(totalAmount);
 
+  // Get the tour ID from the URL parameters
   const { id } = useParams();
   const { data, isLoading, isError } = useGetAllToursQuery({ _id: id });
 
   const tourData = data?.[0];
 
+  // Update total amount whenever guest count or tour data changes
   useEffect(() => {
     if (!isLoading && !isError) {
       setTotalAmount(guestCount * tourData!.costFrom);
@@ -38,12 +43,14 @@ export default function Booking() {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 p-6 container mx-auto">
+      {/* not is loading and isError */}
       {!isLoading && isError && (
         <div>
           <p>Something Went Wrong!!</p>{" "}
         </div>
       )}
 
+      {/* Not is loading and data is empty */}
       {!isLoading && data?.length === 0 && (
         <div>
           <p>No Data Found</p>{" "}
