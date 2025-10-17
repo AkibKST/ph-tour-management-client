@@ -1,7 +1,9 @@
 import type { ComponentType } from "react";
 
+// re-exporting types for easier imports from auth
 export type { ISendOtp, IVerifyOtp, ILogin } from "./auth.type";
 
+// re-exporting types for easier imports from tour
 export type { ITourPackage } from "./tour.type";
 
 export interface IResponse<T> {

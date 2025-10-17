@@ -1,3 +1,4 @@
+// type for tour package data
 export interface ITourPackage {
   _id: string;
   title: string;

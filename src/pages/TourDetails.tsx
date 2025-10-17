@@ -5,9 +5,13 @@ import { format } from "date-fns";
 import { Link, useParams } from "react-router";
 
 export default function TourDetails() {
+  // Get the tour ID from the URL parameters
   const { id } = useParams();
+
+  // Fetch tour details using the tour ID for specific tour
   const { data, isLoading } = useGetAllToursQuery({ _id: id });
 
+  // Fetch division details using the division ID from the tour data
   const { data: divisionData } = useGetDivisionsQuery(
     {
       _id: data?.[0]?.division,
@@ -18,8 +22,9 @@ export default function TourDetails() {
     }
   );
 
-  console.log(divisionData);
+  // console.log(divisionData);
 
+  // Get the first tour data (since we queried by ID, there should be only one)
   const tourData = data?.[0];
 
   if (isLoading) {

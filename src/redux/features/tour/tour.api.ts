@@ -56,7 +56,7 @@ export const tourApi = baseApi.injectEndpoints({
     }),
     // -------------------------------
 
-    // get all tours query
+    // get all tours query with params for filtering
     getAllTours: builder.query<ITourPackage[], unknown>({
       query: (params) => ({
         url: "/tour",
