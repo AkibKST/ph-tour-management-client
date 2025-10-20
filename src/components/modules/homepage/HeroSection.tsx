@@ -14,12 +14,15 @@ import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 import { useState } from "react";
 
 export default function HeroSection() {
+  // state to hold selected division for filtering
   const [selectedDivision, setSelectedDivision] = useState<string | undefined>(
     undefined
   );
 
+  // fetch divisions for select options
   const { data: divisionData } = useGetDivisionsQuery(undefined);
 
+  // map fetched data to select division options
   const divisionOption = divisionData?.map(
     (item: { _id: string; name: string }) => ({
       label: item.name,
@@ -72,8 +75,10 @@ export default function HeroSection() {
                 </SelectContent>
               </Select>
 
+              {/* Search Button with Division Filter */}
               {selectedDivision ? (
                 <Button asChild>
+                  {/* Link with tour page division filter */}
                   <Link to={`/tours?division=${selectedDivision}`}>Search</Link>
                 </Button>
               ) : (
