@@ -43,9 +43,10 @@ export const tourApi = baseApi.injectEndpoints({
 
     // get tour type query
     getTourTypes: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/tour/tour-types",
         method: "GET",
+        params: params,
       }),
 
       //for cache invalidation
