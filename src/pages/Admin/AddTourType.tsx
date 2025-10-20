@@ -101,12 +101,13 @@ export default function AddTourType() {
 
       {/* Pagination Controls */}
       {totalPage > 1 && (
-        <div>
+        <div className="mt-4">
           <Pagination>
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
                   onClick={() => setCurrentPage((prev) => prev - 1)}
+                  //disable previous button if we are on first page
                   className={
                     currentPage === 1
                       ? "pointer-events-none opacity-50"
@@ -114,6 +115,8 @@ export default function AddTourType() {
                   }
                 />
               </PaginationItem>
+
+              {/* create array for pagination items with page numbers  where length < totalPage  and use map for every single page*/}
               {Array.from({ length: totalPage }, (_, index) => index + 1).map(
                 (page) => (
                   <PaginationItem
@@ -133,6 +136,7 @@ export default function AddTourType() {
               <PaginationItem>
                 <PaginationNext
                   onClick={() => setCurrentPage((prev) => prev + 1)}
+                  //disable next button if we are on last page
                   className={
                     currentPage === totalPage
                       ? "pointer-events-none opacity-50"
