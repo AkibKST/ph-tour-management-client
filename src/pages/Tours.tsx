@@ -5,11 +5,14 @@ import { useGetAllToursQuery } from "@/redux/features/tour/tour.api";
 import { Link, useSearchParams } from "react-router";
 
 export default function Tours() {
+  // get search params from url for filtering
   const [searchParams] = useSearchParams();
 
+  // extract division and tourType from search params
   const division = searchParams.get("division") || undefined;
   const tourType = searchParams.get("tourType") || undefined;
 
+  // fetch tours based on division and tourType filters
   const { data } = useGetAllToursQuery({ division, tourType });
 
   return (
@@ -37,7 +40,7 @@ export default function Tours() {
 
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xl font-bold text-primary">
-                  From ৳{item.costFrom}
+                  From ৳{item.costFrom.toLocaleString()}
                 </span>
                 <span className="text-sm text-muted-foreground">
                   Max {item.maxGuest} guests
