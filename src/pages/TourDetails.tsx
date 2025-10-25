@@ -12,6 +12,8 @@ export default function TourDetails() {
   const { data, isLoading } = useGetAllToursQuery({ _id: id });
 
   // Fetch division details using the division ID from the tour data
+  // and get only the name field when data is available.
+  // no data fetch will be skipped
   const { data: divisionData } = useGetDivisionsQuery(
     {
       _id: data?.[0]?.division,
@@ -68,7 +70,7 @@ export default function TourDetails() {
           <h2 className="text-xl font-semibold mb-4">Tour Details</h2>
           <div className="space-y-2">
             <p>
-              <strong>Dates:</strong>{" "}
+              <strong>Dates:</strong> {/* format the start and end dates */}
               {format(
                 new Date(
                   tourData?.startDate ? tourData?.startDate : new Date()
@@ -91,7 +93,7 @@ export default function TourDetails() {
               <strong>Division:</strong> {divisionData?.[0]?.name}
             </p>
             <p>
-              <strong>Tour Type:</strong> {tourData?.tourType}
+              <strong>Tour Type:</strong> {data?.[0]?.title}
             </p>
             <p>
               <strong>Min Age:</strong> {tourData?.minAge} years
