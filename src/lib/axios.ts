@@ -50,7 +50,8 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     // console.log("Request failed", error.response.data.message);
 
-    //* For Token Expired */
+    // Specific Error: Token Expired
+    // and capture the original request
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry: boolean;
     };
@@ -83,6 +84,7 @@ axiosInstance.interceptors.response.use(
 
         processQueue(null);
 
+        // Retry the original request with new token
         return axiosInstance(originalRequest);
       } catch (error) {
         processQueue(error);
